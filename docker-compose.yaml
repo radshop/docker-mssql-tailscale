@@ -1,0 +1,38 @@
+# docker-compose.yaml
+---
+version: "3.7"
+services:
+  ts-mssql1:
+    image: tailscale/tailscale:latest
+    container_name: ts-mssql1
+    network_mode: bridge
+    hostname: mssql1
+    ports:
+      - "1433:1433"
+    environment:
+      - TS_AUTHKEY=${AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - tailscale-data-mssql1:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: always
+  mssql1:
+    container_name: mssql1
+    restart: always
+    depends_on:
+      - ts-mssql1
+    network_mode: service:ts-mssql1
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD}
+      ACCEPT_EULA: "Y"
+      UID: 1000
+    volumes:
+      - /var/mssql1:/var/opt/mssql
+
+volumes:
+  tailscale-data-mssql1:
+    driver: local

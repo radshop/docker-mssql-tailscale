@@ -1,0 +1,4 @@
+# .env
+
+SA_PASSWORD=xxxxxx
+AUTHKEY=tskey-auth-xxxxxx
