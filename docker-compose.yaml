@@ -33,7 +33,7 @@ services:
       UID: 1000
       USER: 10001
     volumes:
-      - /var/mssql:/var/opt/mssql
+      - /var/mssql1:/var/opt/mssql
 
 volumes:
   tailscale-data-mssql1:
